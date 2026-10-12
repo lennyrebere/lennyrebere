@@ -1,4 +1,22 @@
 // ════════════════════════════════════════════════════════════════════
+// STATISTIQUES (GoatCounter) : sans cookies, sans identifiant, donc sans bannière de consentement.
+// Désactivées dans l'éditeur (iframe) et en local (localhost) pour ne pas fausser les chiffres.
+// Pour couper : mettre GOATCOUNTER_URL = ''
+// ════════════════════════════════════════════════════════════════════
+var GOATCOUNTER_URL = 'https://lennyrebere.goatcounter.com/count';
+
+(function () {
+  if (!GOATCOUNTER_URL || window.self !== window.top) return;
+  var h = location.hostname;
+  if (h === 'localhost' || h === '127.0.0.1' || h === '[::1]' || h === '' || /\.local$/.test(h)) return;
+  var s = document.createElement('script');
+  s.async = true;
+  s.setAttribute('data-goatcounter', GOATCOUNTER_URL);
+  s.src = 'https://gc.zgo.at/count.js';
+  document.head.appendChild(s);
+})();
+
+// ════════════════════════════════════════════════════════════════════
 // FOND VIDÉO SUR TOUT LE SITE (essai) — interrupteur :
 //   FOND_VIDEO = ['teaser-1.mp4', 'teaser-2.mp4']  → une vidéo tirée au hasard en arrière-plan
 //   FOND_VIDEO = []                                → désactivé, le site redevient comme avant
