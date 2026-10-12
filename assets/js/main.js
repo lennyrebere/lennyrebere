@@ -165,15 +165,31 @@ document.addEventListener('DOMContentLoaded', function () {
     colG.classList.add('js-lien');
     activer(textes[0].dataset.id);
 
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-          activer(entry.target.dataset.lien);
-        }
-      });
-    }, { root: colD, threshold: [0.5] });
-
-    rows.forEach(function (row) { observer.observe(row); });
+    // Texte actif = projet de l'image qui occupe le repère situé à 30 % de la hauteur de la colonne.
+    // Calculé sur la géométrie réelle, et recalculé à chaque image chargée : tant que les images n'ont pas
+    // de hauteur, plusieurs lignes se superposent et un autre texte (Horizons) pouvait s'afficher d'abord.
+    // Les lignes de hauteur nulle (image pas encore chargée) sont ignorées.
+    var attente = false;
+    function majTexteActif() {
+      attente = false;
+      var zone = colD.getBoundingClientRect();
+      var repere = zone.top + zone.height * 0.3;
+      for (var k = 0; k < rows.length; k++) {
+        var r = rows[k].getBoundingClientRect();
+        if (r.height > 1 && r.top <= repere && r.bottom > repere) { activer(rows[k].dataset.lien); return; }
+      }
+      // repère tombé dans l'espace entre deux images : garder le texte courant
+    }
+    function planifierMaj() {
+      if (attente) return;
+      attente = true;
+      setTimeout(majTexteActif, 40);
+    }
+    colD.addEventListener('scroll', planifierMaj, { passive: true });
+    colD.addEventListener('load', planifierMaj, true);   // chaque image chargée change les hauteurs
+    window.addEventListener('load', planifierMaj);
+    window.addEventListener('resize', planifierMaj);
+    majTexteActif();
   });
 
   // ── Liste des projets sous le menu : ordre = ordre de défilement réel
