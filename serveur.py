@@ -5,6 +5,7 @@ import json
 import os
 import base64
 import urllib.parse
+import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).parent
@@ -24,7 +25,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self.end_headers()
                 return
             extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
-            fichiers = sorted(f.name for f in dossier.iterdir() if f.is_file() and f.suffix.lower() in extensions) if dossier.exists() else []
+            fichiers = sorted(unicodedata.normalize('NFC', f.name) for f in dossier.iterdir() if f.is_file() and f.suffix.lower() in extensions) if dossier.exists() else []
             self._ok({'images': fichiers})
             return
         super().do_GET()
