@@ -921,26 +921,135 @@ a.presse-item:hover {
   text-decoration-color: var(--couleur-texte);
 }
 
-@media (max-width: 600px) {
+/* ===========================
+   MOBILE / TABLETTE VERTICALE (≤ 900px) : tout passe sur une seule colonne
+   Les !important écrasent les décalages inline posés par l'éditeur (left: -247px, etc.)
+=========================== */
+@media (max-width: 900px) {
+  html, body { overflow-x: hidden; }
+
   .page-accueil {
-    padding: 30px 20px;
+    max-width: none;
+    margin: 0;
+    padding: 20px 16px 40px;
   }
 
+  header {
+    display: block;
+    margin-bottom: 16px;
+  }
+  header h1 {
+    width: auto;
+    direction: ltr;
+    text-align: left;
+    position: static;
+    left: auto;
+    top: auto;
+    white-space: normal;
+  }
+  .toggle-info { display: none; }
+
   .layout {
-    flex-direction: column;
-    gap: 24px;
+    display: block;
   }
 
   nav#menu {
+    position: static;
+    left: auto;
+    width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 8px 16px;
-    width: 100%;
+    gap: 2px 18px;
+    text-align: left;
+    padding-top: 0;
+    margin-bottom: 24px;
   }
+  nav#menu a { font-size: 13px; line-height: 1.9; }
 
-  figure img {
-    max-width: 100%;
+  .liste-projets-menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    width: 100%;
+    margin-top: 12px;
+    padding-top: 12px;
   }
+  nav#menu .liste-projets-menu a { font-size: 11px; line-height: 1.5; opacity: 0.8; }
+
+  .contenu { margin-left: 0 !important; }
+
+  figure img { max-width: 100%; }
+
+  /* Presse / Bio */
+  .presse-liste,
+  .bio-liste {
+    margin-left: 0 !important;
+    max-width: none;
+  }
+  .bio-liste { margin-top: 0; }
+  .layout > .bio-intro {
+    position: static;
+    width: auto;
+    margin: 0 0 28px;
+    text-align: left;
+    font-size: 13px;
+  }
+  .layout > .bio-intro p:last-child { align-items: flex-start; }
+  .layout > .bio-intro a { direction: ltr; white-space: normal; overflow-wrap: anywhere; letter-spacing: normal; }
+
+  /* Grille Travaux */
+  .grille-travaux {
+    position: static !important;
+    left: auto !important;
+    width: 100% !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 12px;
+  }
+  .legende-dessous { opacity: 1; text-align: left; }
+
+  /* Défilement des projets : texte puis images de chaque projet, en colonne */
+  .ligne-v-infinie, .ligne-h-infinie, .zone-espace-fin { display: none !important; }
+  .zones-conteneur {
+    display: block;
+    position: static !important;
+    left: auto !important;
+    padding-right: 0;
+    margin-bottom: 0;
+  }
+  .zone-bicolonne,
+  .zone-bicolonne.zone-remonte-haut {
+    display: block !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+  .zone-bicolonne.zone-remonte-haut .zone-col-droite,
+  .zone-col-droite {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    flex: none !important;
+    margin-left: 0 !important;
+    overflow: visible !important;
+  }
+  .zone-col-gauche {
+    position: static !important;
+    width: 100% !important;
+    top: auto !important;
+  }
+  .zone-col-gauche:empty { display: none; }
+  .zone-col-droite .zone-texte-item {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    margin: 36px 0 16px !important;
+    font-size: 12px !important;
+    text-align: left !important;
+  }
+  .zone-col-droite .zone-texte-item:first-child { margin-top: 0 !important; }
+  .zone-row { margin-bottom: 14px; }
 
   .lightbox-precedent,
   .lightbox-suivant {

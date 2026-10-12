@@ -9,6 +9,7 @@ var FOND_VIDEO = ['teaser-1.mp4', 'teaser-2.mp4'];
 
 (function () {
   if (!FOND_VIDEO || !FOND_VIDEO.length || window.self !== window.top) return;   // pas dans l'éditeur (iframe)
+  if (window.matchMedia && window.matchMedia('(max-width: 900px)').matches) return;   // pas de fond vidéo sur mobile
   document.addEventListener('DOMContentLoaded', function () {
     if (document.querySelector('.page-porte')) return;    // la page d'entrée a déjà sa vidéo
     if (document.querySelector('.zone-bicolonne, .grille-travaux')) return;   // Travaux + défilement : fond blanc
@@ -120,6 +121,17 @@ document.addEventListener('DOMContentLoaded', function () {
       window.addEventListener('resize', ajusterEspaceFin);
       var lignesFin = colD.querySelectorAll('.zone-row');
       lignesFin[lignesFin.length - 1].querySelectorAll('img').forEach(function (im) { im.addEventListener('load', ajusterEspaceFin); });
+    }
+
+    // Mobile : chaque texte est placé juste avant la première image de son projet
+    // (le mécanisme texte « actif » à côté des images n'existe pas en colonne unique)
+    if (window.self === window.top && window.matchMedia && window.matchMedia('(max-width: 900px)').matches) {
+      textes.forEach(function (t) {
+        var premiere = colD.querySelector('.zone-row[data-lien="' + t.dataset.id + '"]');
+        if (premiere) colD.insertBefore(t, premiere);
+        else t.style.display = 'none';
+      });
+      return;
     }
 
     colG.classList.add('js-lien');
