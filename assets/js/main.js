@@ -11,6 +11,7 @@ var FOND_VIDEO = ['teaser-1.mp4', 'teaser-2.mp4'];
   if (!FOND_VIDEO || !FOND_VIDEO.length || window.self !== window.top) return;   // pas dans l'éditeur (iframe)
   if (window.matchMedia && window.matchMedia('(max-width: 900px)').matches) return;   // pas de fond vidéo sur mobile
   document.addEventListener('DOMContentLoaded', function () {
+
     if (document.querySelector('.page-porte')) return;    // la page d'entrée a déjà sa vidéo
     if (document.querySelector('.zone-bicolonne, .grille-travaux')) return;   // Travaux + défilement : fond blanc
     var scripts = document.querySelectorAll('script[src*="main.js"]');
@@ -69,6 +70,14 @@ document.addEventListener('DOMContentLoaded', function () {
       };
       requestAnimationFrame(surveiller);
     }
+  }
+
+  // ── Adresse e-mail protégée : assemblée ici, jamais écrite en clair dans la page (anti-robots).
+  //    Pas dans l'éditeur (iframe), pour ne pas enregistrer l'adresse dans le fichier. ──
+  if (window.self === window.top) {
+    document.querySelectorAll('a.mail-protege').forEach(function (a) {
+      a.href = 'mailto:' + a.getAttribute('data-u') + '@' + a.getAttribute('data-d');
+    });
   }
 
   // ── Image aléatoire (page d'accueil) : change de visuel à chaque chargement ──
