@@ -73,7 +73,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // ── Image aléatoire (page d'accueil) : change de visuel à chaque chargement ──
   var imgAleatoire = document.querySelector('img[data-image-aleatoire]');
-  if (imgAleatoire && window.self === window.top) {
+  var modeVideo = imgAleatoire && imgAleatoire.closest('figure[data-mode="video"]');
+  if (imgAleatoire && !modeVideo && window.self === window.top) {
     var srcActuel = imgAleatoire.getAttribute('src') || '';
     var m = srcActuel.match(/^(.*assets\/)/);
     var base = m ? m[1] : 'assets/';
